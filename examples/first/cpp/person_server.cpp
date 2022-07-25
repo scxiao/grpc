@@ -7,6 +7,7 @@
 #include <grpcpp/health_check_service_interface.h>
 
 #include "addressbook.pb.h"
+#include "addressbook.grpc.pb.h"
 
 using grpc::Server;
 using grpc::ServerBuilder;

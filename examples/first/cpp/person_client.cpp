@@ -4,6 +4,7 @@
 
 #include <grpcpp/grpcpp.h>
 #include "addressbook.pb.h"
+#include "addressbook.grpc.pb.h"
 #include "person.hpp"
 
 using grpc::Channel;
