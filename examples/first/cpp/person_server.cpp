@@ -17,9 +17,14 @@ using tutorial::Greeter;
 using tutorial::Person;
 using tutorial::PersonRequest;
 
+void CreatePersonInfo(Person *person_info)
+{
+
+}
+
 class GetInfoServiceImpl final : public Greeter::Service
 {
-    Status GetInfo(ServiceContext *context, const PersonRequest *request,
+    Status GetInfo(ServerContext *context, const PersonRequest *request,
                    Person *reply) override 
     {
         std::string name = request->name();
@@ -37,7 +42,7 @@ void RunServer()
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
     ServerBuilder builder;
 
-    builder.AddListeningPort(server_address, grpc::InsecureChannelCredentials());
+    builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
     builder.RegisterService(&service);
 
     std::unique_ptr<Server> server(builder.BuildAndStart());
