@@ -2,6 +2,14 @@ syntax = "proto2";
 
 package tutorial;
 
+service Greeter {
+  rpc GetInfo (PersonRequest) returns (Person) {}
+}
+
+message PersonRequest {
+  required string name = 1;
+}
+
 message Person {
   optional string name = 1;
   optional int32 id = 2;
