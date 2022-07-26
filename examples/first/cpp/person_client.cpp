@@ -30,7 +30,7 @@ PersonInfo convert_to_persion_info(const tutorial::Person& psn)
     std::stringstream ss;
     for (int j = 0; j < psn.phones_size(); ++j)
     {
-        const auto& pn = pns.phone(j);
+        const auto& pn = psn.phones(j);
         switch(pn.type())
         {
           case tutorial::Person::MOBILE:
