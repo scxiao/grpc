@@ -22,7 +22,8 @@
 namespace tutorial {
 
 static const char* Greeter_method_names[] = {
-  "/tutorial.Greeter/GetInfo",
+  "/tutorial.Greeter/GetPerson",
+  "/tutorial.Greeter/ListPersons",
 };
 
 std::unique_ptr< Greeter::Stub> Greeter::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
@@ -32,30 +33,47 @@ std::unique_ptr< Greeter::Stub> Greeter::NewStub(const std::shared_ptr< ::grpc::
 }
 
 Greeter::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options)
-  : channel_(channel), rpcmethod_GetInfo_(Greeter_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  : channel_(channel), rpcmethod_GetPerson_(Greeter_method_names[0], options.suffix_for_stats(),::grpc::internal::RpcMethod::NORMAL_RPC, channel)
+  , rpcmethod_ListPersons_(Greeter_method_names[1], options.suffix_for_stats(),::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
   {}
 
-::grpc::Status Greeter::Stub::GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::tutorial::Person* response) {
-  return ::grpc::internal::BlockingUnaryCall< ::tutorial::PersonRequest, ::tutorial::Person, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetInfo_, context, request, response);
+::grpc::Status Greeter::Stub::GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::tutorial::Person* response) {
+  return ::grpc::internal::BlockingUnaryCall< ::tutorial::PersonRequest, ::tutorial::Person, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), rpcmethod_GetPerson_, context, request, response);
 }
 
-void Greeter::Stub::async::GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, std::function<void(::grpc::Status)> f) {
-  ::grpc::internal::CallbackUnaryCall< ::tutorial::PersonRequest, ::tutorial::Person, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetInfo_, context, request, response, std::move(f));
+void Greeter::Stub::async::GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, std::function<void(::grpc::Status)> f) {
+  ::grpc::internal::CallbackUnaryCall< ::tutorial::PersonRequest, ::tutorial::Person, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetPerson_, context, request, response, std::move(f));
 }
 
-void Greeter::Stub::async::GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, ::grpc::ClientUnaryReactor* reactor) {
-  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetInfo_, context, request, response, reactor);
+void Greeter::Stub::async::GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, ::grpc::ClientUnaryReactor* reactor) {
+  ::grpc::internal::ClientCallbackUnaryFactory::Create< ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(stub_->channel_.get(), stub_->rpcmethod_GetPerson_, context, request, response, reactor);
 }
 
-::grpc::ClientAsyncResponseReader< ::tutorial::Person>* Greeter::Stub::PrepareAsyncGetInfoRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::tutorial::Person, ::tutorial::PersonRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetInfo_, context, request);
+::grpc::ClientAsyncResponseReader< ::tutorial::Person>* Greeter::Stub::PrepareAsyncGetPersonRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncResponseReaderHelper::Create< ::tutorial::Person, ::tutorial::PersonRequest, ::grpc::protobuf::MessageLite, ::grpc::protobuf::MessageLite>(channel_.get(), cq, rpcmethod_GetPerson_, context, request);
 }
 
-::grpc::ClientAsyncResponseReader< ::tutorial::Person>* Greeter::Stub::AsyncGetInfoRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+::grpc::ClientAsyncResponseReader< ::tutorial::Person>* Greeter::Stub::AsyncGetPersonRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
   auto* result =
-    this->PrepareAsyncGetInfoRaw(context, request, cq);
+    this->PrepareAsyncGetPersonRaw(context, request, cq);
   result->StartCall();
   return result;
+}
+
+::grpc::ClientReader< ::tutorial::Person>* Greeter::Stub::ListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request) {
+  return ::grpc::internal::ClientReaderFactory< ::tutorial::Person>::Create(channel_.get(), rpcmethod_ListPersons_, context, request);
+}
+
+void Greeter::Stub::async::ListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::grpc::ClientReadReactor< ::tutorial::Person>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::tutorial::Person>::Create(stub_->channel_.get(), stub_->rpcmethod_ListPersons_, context, request, reactor);
+}
+
+::grpc::ClientAsyncReader< ::tutorial::Person>* Greeter::Stub::AsyncListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::tutorial::Person>::Create(channel_.get(), cq, rpcmethod_ListPersons_, context, request, true, tag);
+}
+
+::grpc::ClientAsyncReader< ::tutorial::Person>* Greeter::Stub::PrepareAsyncListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::tutorial::Person>::Create(channel_.get(), cq, rpcmethod_ListPersons_, context, request, false, nullptr);
 }
 
 Greeter::Service::Service() {
@@ -67,17 +85,34 @@ Greeter::Service::Service() {
              ::grpc::ServerContext* ctx,
              const ::tutorial::PersonRequest* req,
              ::tutorial::Person* resp) {
-               return service->GetInfo(ctx, req, resp);
+               return service->GetPerson(ctx, req, resp);
+             }, this)));
+  AddMethod(new ::grpc::internal::RpcServiceMethod(
+      Greeter_method_names[1],
+      ::grpc::internal::RpcMethod::SERVER_STREAMING,
+      new ::grpc::internal::ServerStreamingHandler< Greeter::Service, ::tutorial::PersonRequest, ::tutorial::Person>(
+          [](Greeter::Service* service,
+             ::grpc::ServerContext* ctx,
+             const ::tutorial::PersonRequest* req,
+             ::grpc::ServerWriter<::tutorial::Person>* writer) {
+               return service->ListPersons(ctx, req, writer);
              }, this)));
 }
 
 Greeter::Service::~Service() {
 }
 
-::grpc::Status Greeter::Service::GetInfo(::grpc::ServerContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response) {
+::grpc::Status Greeter::Service::GetPerson(::grpc::ServerContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response) {
   (void) context;
   (void) request;
   (void) response;
+  return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+}
+
+::grpc::Status Greeter::Service::ListPersons(::grpc::ServerContext* context, const ::tutorial::PersonRequest* request, ::grpc::ServerWriter< ::tutorial::Person>* writer) {
+  (void) context;
+  (void) request;
+  (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 

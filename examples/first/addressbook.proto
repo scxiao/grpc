@@ -3,7 +3,8 @@ syntax = "proto2";
 package tutorial;
 
 service Greeter {
-  rpc GetInfo (PersonRequest) returns (Person) {}
+  rpc GetPerson (PersonRequest) returns (Person) {}
+  rpc ListPersons(PersonRequest) returns (stream Person) {}
 }
 
 message PersonRequest {

@@ -14,6 +14,7 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
+using grpc::ServerWriter;
 using tutorial::Greeter;
 using tutorial::Person;
 using tutorial::PersonRequest;
@@ -33,12 +34,12 @@ void CreatePersonInfo(const tutorial::AddressBook& addr_book, const std::string&
     }
 }
 
-class GetInfoServiceImpl final : public Greeter::Service
+class GetPersonServiceImpl final : public Greeter::Service
 {
-    Status GetInfo(ServerContext *context, const PersonRequest *request,
-                   Person *reply) override 
+    Status GetPerson(ServerContext *context, const PersonRequest *request,
+                     Person *reply) override 
     {
-        std::fstream ifile("addr", std::ios::binary | std::ios::in);
+        std::fstream ifile("addr1", std::ios::binary | std::ios::in);
         tutorial::AddressBook addr_book;
         if (not addr_book.ParseFromIstream(&ifile))
         {
@@ -46,7 +47,39 @@ class GetInfoServiceImpl final : public Greeter::Service
             return Status::CANCELLED;
         }
         std::string name = request->name();
+        std::cout << "request_name = " << name << std::endl;
         CreatePersonInfo(addr_book, name, reply);
+
+        return Status::OK;
+    }
+
+    Status ListPersons(ServerContext* context, 
+                       const PersonRequest* request, 
+                       ServerWriter<Person>* writer) override 
+    {
+        std::fstream ifile("addr1", std::ios::binary | std::ios::in);
+        tutorial::AddressBook addr_book;
+        if (not addr_book.ParseFromIstream(&ifile))
+        {
+            std::cerr << "Failed to parse address book \"addr\"!" << std::endl;
+            return Status::CANCELLED;
+        }
+        std::string name = request->name();
+        std::cout << "request_name = " << name << std::endl;
+        if (name == "all")
+        {
+            for (int i = 0; i < addr_book.people_size(); ++i)
+            {
+                const auto& p = addr_book.people(i);
+                writer->Write(p);
+            }
+        }
+        else
+        {
+            Person p;
+            CreatePersonInfo(addr_book, name, &p);
+            writer->Write(p);
+        }
 
         return Status::OK;
     }
@@ -55,7 +88,7 @@ class GetInfoServiceImpl final : public Greeter::Service
 void RunServer()
 {
     std::string server_address("0.0.0.0:50051");
-    GetInfoServiceImpl service;
+    GetPersonServiceImpl service;
     grpc::EnableDefaultHealthCheckService(true);
     grpc::reflection::InitProtoReflectionServerBuilderPlugin();
     ServerBuilder builder;

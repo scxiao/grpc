@@ -139,12 +139,14 @@ const char descriptor_table_protodef_addressbook_2eproto[] PROTOBUF_SECTION_VARI
   "\001(\0162\032.tutorial.Person.PhoneType:\004HOME\"+\n"
   "\tPhoneType\022\n\n\006MOBILE\020\000\022\010\n\004HOME\020\001\022\010\n\004WORK"
   "\020\002\"/\n\013AddressBook\022 \n\006people\030\001 \003(\0132\020.tuto"
-  "rial.Person2A\n\007Greeter\0226\n\007GetInfo\022\027.tuto"
-  "rial.PersonRequest\032\020.tutorial.Person\"\000"
+  "rial.Person2\201\001\n\007Greeter\0228\n\tGetPerson\022\027.t"
+  "utorial.PersonRequest\032\020.tutorial.Person\""
+  "\000\022<\n\013ListPersons\022\027.tutorial.PersonReques"
+  "t\032\020.tutorial.Person\"\0000\001"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_addressbook_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_addressbook_2eproto = {
-  false, false, 398, descriptor_table_protodef_addressbook_2eproto, "addressbook.proto", 
+  false, false, 463, descriptor_table_protodef_addressbook_2eproto, "addressbook.proto", 
   &descriptor_table_addressbook_2eproto_once, nullptr, 0, 4,
   schemas, file_default_instances, TableStruct_addressbook_2eproto::offsets,
   file_level_metadata_addressbook_2eproto, file_level_enum_descriptors_addressbook_2eproto, file_level_service_descriptors_addressbook_2eproto,

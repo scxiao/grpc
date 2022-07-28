@@ -35,41 +35,64 @@ class Greeter final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::tutorial::Person* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>> AsyncGetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>>(AsyncGetInfoRaw(context, request, cq));
+    virtual ::grpc::Status GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::tutorial::Person* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>> AsyncGetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>>(AsyncGetPersonRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>> PrepareAsyncGetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>>(PrepareAsyncGetInfoRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>> PrepareAsyncGetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>>(PrepareAsyncGetPersonRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::tutorial::Person>> ListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::tutorial::Person>>(ListPersonsRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::tutorial::Person>> AsyncListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::tutorial::Person>>(AsyncListPersonsRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::tutorial::Person>> PrepareAsyncListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::tutorial::Person>>(PrepareAsyncListPersonsRaw(context, request, cq));
     }
     class async_interface {
      public:
       virtual ~async_interface() {}
-      virtual void GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, ::grpc::ClientUnaryReactor* reactor) = 0;
+      virtual void ListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::grpc::ClientReadReactor< ::tutorial::Person>* reactor) = 0;
     };
     typedef class async_interface experimental_async_interface;
     virtual class async_interface* async() { return nullptr; }
     class async_interface* experimental_async() { return async(); }
    private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>* AsyncGetInfoRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>* PrepareAsyncGetInfoRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>* AsyncGetPersonRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::tutorial::Person>* PrepareAsyncGetPersonRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::tutorial::Person>* ListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::tutorial::Person>* AsyncListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::tutorial::Person>* PrepareAsyncListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
-    ::grpc::Status GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::tutorial::Person* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>> AsyncGetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>>(AsyncGetInfoRaw(context, request, cq));
+    ::grpc::Status GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::tutorial::Person* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>> AsyncGetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>>(AsyncGetPersonRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>> PrepareAsyncGetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>>(PrepareAsyncGetInfoRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>> PrepareAsyncGetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::tutorial::Person>>(PrepareAsyncGetPersonRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientReader< ::tutorial::Person>> ListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::tutorial::Person>>(ListPersonsRaw(context, request));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::tutorial::Person>> AsyncListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::tutorial::Person>>(AsyncListPersonsRaw(context, request, cq, tag));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::tutorial::Person>> PrepareAsyncListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::tutorial::Person>>(PrepareAsyncListPersonsRaw(context, request, cq));
     }
     class async final :
       public StubInterface::async_interface {
      public:
-      void GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, std::function<void(::grpc::Status)>) override;
-      void GetInfo(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, std::function<void(::grpc::Status)>) override;
+      void GetPerson(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response, ::grpc::ClientUnaryReactor* reactor) override;
+      void ListPersons(::grpc::ClientContext* context, const ::tutorial::PersonRequest* request, ::grpc::ClientReadReactor< ::tutorial::Person>* reactor) override;
      private:
       friend class Stub;
       explicit async(Stub* stub): stub_(stub) { }
@@ -81,9 +104,13 @@ class Greeter final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::tutorial::Person>* AsyncGetInfoRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::tutorial::Person>* PrepareAsyncGetInfoRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_GetInfo_;
+    ::grpc::ClientAsyncResponseReader< ::tutorial::Person>* AsyncGetPersonRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::tutorial::Person>* PrepareAsyncGetPersonRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientReader< ::tutorial::Person>* ListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request) override;
+    ::grpc::ClientAsyncReader< ::tutorial::Person>* AsyncListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::tutorial::Person>* PrepareAsyncListPersonsRaw(::grpc::ClientContext* context, const ::tutorial::PersonRequest& request, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_GetPerson_;
+    const ::grpc::internal::RpcMethod rpcmethod_ListPersons_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -91,147 +118,276 @@ class Greeter final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status GetInfo(::grpc::ServerContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response);
+    virtual ::grpc::Status GetPerson(::grpc::ServerContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response);
+    virtual ::grpc::Status ListPersons(::grpc::ServerContext* context, const ::tutorial::PersonRequest* request, ::grpc::ServerWriter< ::tutorial::Person>* writer);
   };
   template <class BaseClass>
-  class WithAsyncMethod_GetInfo : public BaseClass {
+  class WithAsyncMethod_GetPerson : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_GetInfo() {
+    WithAsyncMethod_GetPerson() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_GetInfo() override {
+    ~WithAsyncMethod_GetPerson() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetInfo(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+    ::grpc::Status GetPerson(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetInfo(::grpc::ServerContext* context, ::tutorial::PersonRequest* request, ::grpc::ServerAsyncResponseWriter< ::tutorial::Person>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestGetPerson(::grpc::ServerContext* context, ::tutorial::PersonRequest* request, ::grpc::ServerAsyncResponseWriter< ::tutorial::Person>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_GetInfo<Service > AsyncService;
   template <class BaseClass>
-  class WithCallbackMethod_GetInfo : public BaseClass {
+  class WithAsyncMethod_ListPersons : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithCallbackMethod_GetInfo() {
+    WithAsyncMethod_ListPersons() {
+      ::grpc::Service::MarkMethodAsync(1);
+    }
+    ~WithAsyncMethod_ListPersons() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ListPersons(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::grpc::ServerWriter< ::tutorial::Person>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestListPersons(::grpc::ServerContext* context, ::tutorial::PersonRequest* request, ::grpc::ServerAsyncWriter< ::tutorial::Person>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_GetPerson<WithAsyncMethod_ListPersons<Service > > AsyncService;
+  template <class BaseClass>
+  class WithCallbackMethod_GetPerson : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithCallbackMethod_GetPerson() {
       ::grpc::Service::MarkMethodCallback(0,
           new ::grpc::internal::CallbackUnaryHandler< ::tutorial::PersonRequest, ::tutorial::Person>(
             [this](
-                   ::grpc::CallbackServerContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response) { return this->GetInfo(context, request, response); }));}
-    void SetMessageAllocatorFor_GetInfo(
+                   ::grpc::CallbackServerContext* context, const ::tutorial::PersonRequest* request, ::tutorial::Person* response) { return this->GetPerson(context, request, response); }));}
+    void SetMessageAllocatorFor_GetPerson(
         ::grpc::MessageAllocator< ::tutorial::PersonRequest, ::tutorial::Person>* allocator) {
       ::grpc::internal::MethodHandler* const handler = ::grpc::Service::GetHandler(0);
       static_cast<::grpc::internal::CallbackUnaryHandler< ::tutorial::PersonRequest, ::tutorial::Person>*>(handler)
               ->SetMessageAllocator(allocator);
     }
-    ~WithCallbackMethod_GetInfo() override {
+    ~WithCallbackMethod_GetPerson() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetInfo(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+    ::grpc::Status GetPerson(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetInfo(
+    virtual ::grpc::ServerUnaryReactor* GetPerson(
       ::grpc::CallbackServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/)  { return nullptr; }
   };
-  typedef WithCallbackMethod_GetInfo<Service > CallbackService;
-  typedef CallbackService ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_GetInfo : public BaseClass {
+  class WithCallbackMethod_ListPersons : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_GetInfo() {
-      ::grpc::Service::MarkMethodGeneric(0);
+    WithCallbackMethod_ListPersons() {
+      ::grpc::Service::MarkMethodCallback(1,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::tutorial::PersonRequest, ::tutorial::Person>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::tutorial::PersonRequest* request) { return this->ListPersons(context, request); }));
     }
-    ~WithGenericMethod_GetInfo() override {
+    ~WithCallbackMethod_ListPersons() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetInfo(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+    ::grpc::Status ListPersons(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::grpc::ServerWriter< ::tutorial::Person>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::tutorial::Person>* ListPersons(
+      ::grpc::CallbackServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/)  { return nullptr; }
+  };
+  typedef WithCallbackMethod_GetPerson<WithCallbackMethod_ListPersons<Service > > CallbackService;
+  typedef CallbackService ExperimentalCallbackService;
+  template <class BaseClass>
+  class WithGenericMethod_GetPerson : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithGenericMethod_GetPerson() {
+      ::grpc::Service::MarkMethodGeneric(0);
+    }
+    ~WithGenericMethod_GetPerson() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPerson(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_GetInfo : public BaseClass {
+  class WithGenericMethod_ListPersons : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_GetInfo() {
-      ::grpc::Service::MarkMethodRaw(0);
+    WithGenericMethod_ListPersons() {
+      ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithRawMethod_GetInfo() override {
+    ~WithGenericMethod_ListPersons() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetInfo(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+    ::grpc::Status ListPersons(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::grpc::ServerWriter< ::tutorial::Person>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestGetInfo(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+  };
+  template <class BaseClass>
+  class WithRawMethod_GetPerson : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawMethod_GetPerson() {
+      ::grpc::Service::MarkMethodRaw(0);
+    }
+    ~WithRawMethod_GetPerson() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPerson(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestGetPerson(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawCallbackMethod_GetInfo : public BaseClass {
+  class WithRawMethod_ListPersons : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawCallbackMethod_GetInfo() {
-      ::grpc::Service::MarkMethodRawCallback(0,
-          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-            [this](
-                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetInfo(context, request, response); }));
+    WithRawMethod_ListPersons() {
+      ::grpc::Service::MarkMethodRaw(1);
     }
-    ~WithRawCallbackMethod_GetInfo() override {
+    ~WithRawMethod_ListPersons() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status GetInfo(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+    ::grpc::Status ListPersons(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::grpc::ServerWriter< ::tutorial::Person>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::ServerUnaryReactor* GetInfo(
-      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+    void RequestListPersons(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncServerStreaming(1, context, request, writer, new_call_cq, notification_cq, tag);
+    }
   };
   template <class BaseClass>
-  class WithStreamedUnaryMethod_GetInfo : public BaseClass {
+  class WithRawCallbackMethod_GetPerson : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithStreamedUnaryMethod_GetInfo() {
+    WithRawCallbackMethod_GetPerson() {
+      ::grpc::Service::MarkMethodRawCallback(0,
+          new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response) { return this->GetPerson(context, request, response); }));
+    }
+    ~WithRawCallbackMethod_GetPerson() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status GetPerson(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerUnaryReactor* GetPerson(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithRawCallbackMethod_ListPersons : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithRawCallbackMethod_ListPersons() {
+      ::grpc::Service::MarkMethodRawCallback(1,
+          new ::grpc::internal::CallbackServerStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+            [this](
+                   ::grpc::CallbackServerContext* context, const::grpc::ByteBuffer* request) { return this->ListPersons(context, request); }));
+    }
+    ~WithRawCallbackMethod_ListPersons() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status ListPersons(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::grpc::ServerWriter< ::tutorial::Person>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* ListPersons(
+      ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)  { return nullptr; }
+  };
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_GetPerson : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithStreamedUnaryMethod_GetPerson() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::StreamedUnaryHandler<
           ::tutorial::PersonRequest, ::tutorial::Person>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerUnaryStreamer<
                      ::tutorial::PersonRequest, ::tutorial::Person>* streamer) {
-                       return this->StreamedGetInfo(context,
+                       return this->StreamedGetPerson(context,
                          streamer);
                   }));
     }
-    ~WithStreamedUnaryMethod_GetInfo() override {
+    ~WithStreamedUnaryMethod_GetPerson() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status GetInfo(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
+    ::grpc::Status GetPerson(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::tutorial::Person* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedGetInfo(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tutorial::PersonRequest,::tutorial::Person>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedGetPerson(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::tutorial::PersonRequest,::tutorial::Person>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_GetInfo<Service > StreamedUnaryService;
-  typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_GetInfo<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_GetPerson<Service > StreamedUnaryService;
+  template <class BaseClass>
+  class WithSplitStreamingMethod_ListPersons : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
+   public:
+    WithSplitStreamingMethod_ListPersons() {
+      ::grpc::Service::MarkMethodStreamed(1,
+        new ::grpc::internal::SplitServerStreamingHandler<
+          ::tutorial::PersonRequest, ::tutorial::Person>(
+            [this](::grpc::ServerContext* context,
+                   ::grpc::ServerSplitStreamer<
+                     ::tutorial::PersonRequest, ::tutorial::Person>* streamer) {
+                       return this->StreamedListPersons(context,
+                         streamer);
+                  }));
+    }
+    ~WithSplitStreamingMethod_ListPersons() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status ListPersons(::grpc::ServerContext* /*context*/, const ::tutorial::PersonRequest* /*request*/, ::grpc::ServerWriter< ::tutorial::Person>* /*writer*/) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with split streamed
+    virtual ::grpc::Status StreamedListPersons(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::tutorial::PersonRequest,::tutorial::Person>* server_split_streamer) = 0;
+  };
+  typedef WithSplitStreamingMethod_ListPersons<Service > SplitStreamedService;
+  typedef WithStreamedUnaryMethod_GetPerson<WithSplitStreamingMethod_ListPersons<Service > > StreamedService;
 };
 
 }  // namespace tutorial

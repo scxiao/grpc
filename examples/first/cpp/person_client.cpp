@@ -10,6 +10,7 @@
 
 using grpc::Channel;
 using grpc::ClientContext;
+using grpc::ClientReader;
 using grpc::Status;
 using tutorial::Greeter;
 using tutorial::Person;
@@ -64,14 +65,14 @@ class PersonClient {
     PersonClient(std::shared_ptr<Channel> channel) : 
         stub_(Greeter::NewStub(channel)) {}
     
-    PersonInfo GetInfo(const std::string& name)
+    PersonInfo GetPerson(const std::string& name)
     {
         PersonRequest request;
         Person reply;
         request.set_name(name);
 
         ClientContext context;
-        Status status = stub_->GetInfo(&context, request, &reply);
+        Status status = stub_->GetPerson(&context, request, &reply);
 
         if (status.ok())
         {
@@ -85,49 +86,90 @@ class PersonClient {
         }
     }
 
+    std::vector<PersonInfo> ListPersons(const std::string& name)
+    {
+        PersonRequest request;
+        request.set_name(name);
+
+        ClientContext context;
+        std::unique_ptr<ClientReader<Person> > reader(stub_->ListPersons(&context, request));
+
+        std::vector<PersonInfo> result;
+        Person p;
+        while (reader->Read(&p))
+        {
+            PersonInfo info = convert_to_persion_info(p);
+            result.push_back(info);
+        }
+        Status status = reader->Finish();
+        if (status.ok()) {
+            std::cout << "ListFeatures rpc succeeded." << std::endl;
+        } else {
+            std::cout << "ListFeatures rpc failed." << std::endl;
+        }
+
+        return result;
+    }
+
   private:
     std::unique_ptr<Greeter::Stub> stub_;
 };
 
-
-int main(int argc, char **argv)
+std::string get_option_value(const std::string& option, const std::vector<std::string>& strs)
 {
-    std::string target_str;
-    std::string arg_str("--target");
-    if (argc > 1)
+    for (auto& str : strs)
     {
-        std::string arg_val = argv[1];
-        auto start_pos = arg_val.find(arg_str);
-        if (start_pos != std::string::npos)
+        auto pos = str.find(option);
+        if (pos == 0)
         {
-            start_pos += arg_str.size();
-            if (arg_val[start_pos] == '=')
+            pos += option.size();
+            if (str[pos] != '=')
             {
-                target_str = arg_val.substr(start_pos + 1);
+                std::cout << "Incorrect option format for \"" << str << "\"" << std::endl;
+                return {};
             }
             else
             {
-                std::cout << "The only correct argument syntax is --target=" << std::endl;
-                return 1;
+                return str.substr(pos + 1);
             }
         }
-        else
+        return {};
+    }
+}
+
+int main(int argc, char **argv)
+{
+    std::string target = "localhost:50051";
+    std::string name = "all";
+    if (argc > 1)
+    {
+        std::vector<std::string> options;
+        for (int i = 1; i < argc; ++i)
         {
-            std::cout << "The only correct argument syntax is --target=" << std::endl;
-            return 1;
+            options.push_back({argv[i]});
+        }
+
+        auto val = get_option_value("--target", options);
+        if (not val.empty())
+        {
+            target = val;
+        }
+
+        val = get_option_value("--name", options);
+        if (not val.empty())
+        {
+            name = val;
         }
     }
-    else
-    {
-        target_str = "localhost:50051";
-    }
 
-    PersonClient pc(grpc::CreateChannel(target_str, grpc::InsecureChannelCredentials()));
-    std::string name("abc");
-    auto person_info = pc.GetInfo(name);
+    PersonClient pc(grpc::CreateChannel(target, grpc::InsecureChannelCredentials()));
+    auto persons = pc.ListPersons(name);
 
     std::cout << "Received person info:" << std::endl;
-    print_person_info(person_info);
+    for (auto& info : persons)
+    {
+        print_person_info(info);
+    }
 
     return 0;
 }
