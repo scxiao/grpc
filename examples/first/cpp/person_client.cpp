@@ -16,11 +16,6 @@ using tutorial::Greeter;
 using tutorial::Person;
 using tutorial::PersonRequest;
 
-    std::string name;
-    int32_t id;
-    std::string email;
-    std::string phone_num;
-
 PersonInfo convert_to_persion_info(const tutorial::Person& psn)
 {
     PersonInfo info;
