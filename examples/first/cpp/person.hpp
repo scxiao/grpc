@@ -9,6 +9,8 @@ struct PersonInfo
     int32_t id;
     std::string email;
     std::string phone_num;
+    std::string phone_type;
+    // std::unordered_map<std::string, std::string> phone_nums;
 
     PersonInfo() 
     {
@@ -16,6 +18,7 @@ struct PersonInfo
         id = -1;
         email = "";
         phone_num = "";
+        phone_type = "";
     }
 };
 

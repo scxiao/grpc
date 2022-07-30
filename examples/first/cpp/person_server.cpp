@@ -14,6 +14,7 @@ using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
+using grpc::ServerReader;
 using grpc::ServerWriter;
 using tutorial::Greeter;
 using tutorial::Person;
@@ -79,6 +80,33 @@ class GetPersonServiceImpl final : public Greeter::Service
             Person p;
             CreatePersonInfo(addr_book, name, &p);
             writer->Write(p);
+        }
+
+        return Status::OK;
+    }
+
+    Status recordPerson(ServerContext* context, ServerReader<tutorial::storeInfo>* reader,
+                        tutorial::storeConfirmation* confirm) override 
+    {
+        tutorial::storeInfo sinfo;
+        std::string file_name;
+        tutorial::AddressBook addr_book;
+        while(reader->Read(&sinfo))
+        {
+            file_name = sinfo.file_name();
+            tutorial::Person* person = addr_book.add_people();
+            *person = sinfo.psn();
+        }
+
+        if (not file_name.empty())
+        {
+            std::fstream output(file_name, std::ios::out | 
+                                           std::ios::trunc | 
+                                           std::ios::binary);
+            if (not addr_book.SerializeToOstream(&output))
+            {
+                std::cerr << "Serialize to output file error" << std::endl;
+            }
         }
 
         return Status::OK;

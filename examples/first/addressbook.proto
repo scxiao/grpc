@@ -3,8 +3,14 @@ syntax = "proto2";
 package tutorial;
 
 service Greeter {
+  // get information of one person
   rpc GetPerson (PersonRequest) returns (Person) {}
+
+  // get information of a list of persons
   rpc ListPersons(PersonRequest) returns (stream Person) {}
+
+  // sent persons info and store remotely
+  rpc recordPerson(stream storeInfo) returns (storeConfirmation) {}
 }
 
 message PersonRequest {
@@ -28,6 +34,15 @@ message Person {
   }
 
   repeated PhoneNumber phones = 4;
+}
+
+message storeConfirmation {
+  required string info = 2;
+}
+
+message storeInfo {
+  required string file_name = 1;
+  required Person psn = 2;
 }
 
 message AddressBook {

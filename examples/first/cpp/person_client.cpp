@@ -11,12 +11,14 @@
 using grpc::Channel;
 using grpc::ClientContext;
 using grpc::ClientReader;
+using grpc::ClientWriter;
+using grpc::ClientReaderWriter;
 using grpc::Status;
 using tutorial::Greeter;
 using tutorial::Person;
 using tutorial::PersonRequest;
 
-PersonInfo convert_to_persion_info(const tutorial::Person& psn)
+PersonInfo convert_from_person(const tutorial::Person& psn)
 {
     PersonInfo info;
     info.name = psn.name();
@@ -47,6 +49,36 @@ PersonInfo convert_to_persion_info(const tutorial::Person& psn)
     return info;
 }
 
+
+std::unordered_map<std::string, tutorial::Person_PhoneType> map_phone_type = 
+{
+    {"mobile", tutorial::Person::MOBILE},
+    {"home", tutorial::Person::HOME},
+    {"work", tutorial::Person::WORK}
+};
+
+tutorial::Person convert_to_person(const PersonInfo& info)
+{
+    tutorial::Person psn;
+    psn.set_id(info.id);
+    psn.set_name(info.name);
+    psn.set_email(info.email);
+
+    tutorial::Person::PhoneNumber* phone_num = psn.add_phones();
+    phone_num->set_number(info.phone_num);
+    if (map_phone_type.count(info.phone_type))
+    {
+        phone_num->set_type(map_phone_type.at(info.phone_type));
+    }
+    else
+    {
+        phone_num->set_type(tutorial::Person::MOBILE);
+    }
+
+    return psn;
+}
+
+
 void print_person_info(const PersonInfo& info)
 {
     std::cout << "Person ID: " << info.id << std::endl;
@@ -71,7 +103,7 @@ class PersonClient {
 
         if (status.ok())
         {
-            PersonInfo info = convert_to_persion_info(reply);
+            PersonInfo info = convert_from_person(reply);
             return info;
         }
         else
@@ -93,7 +125,7 @@ class PersonClient {
         Person p;
         while (reader->Read(&p))
         {
-            PersonInfo info = convert_to_persion_info(p);
+            PersonInfo info = convert_from_person(p);
             result.push_back(info);
         }
         Status status = reader->Finish();
@@ -104,6 +136,37 @@ class PersonClient {
         }
 
         return result;
+    }
+
+    void recordPerson(const std::string& filename, const std::vector<PersonInfo>& vec_psns)
+    {
+        tutorial::storeInfo sinfo;
+        tutorial::storeConfirmation confirm;
+        ClientContext context;
+        std::unique_ptr<ClientWriter<tutorial::storeInfo>> writer(stub_->recordPerson(&context, &confirm));
+        std::string file_name(filename);
+
+        for (std::size_t i = 0; i < vec_psns.size(); ++i)
+        {
+            // convert PersonInfo to storeInfo struct
+            tutorial::Person psn = convert_to_person(vec_psns.at(i));
+            sinfo.set_allocated_psn(&psn);
+            sinfo.set_allocated_file_name(&file_name);
+            if (not writer->Write(sinfo))
+            {
+                break;
+            }
+        }
+        writer->WritesDone();
+        Status status = writer->Finish();
+        if (status.ok())
+        {
+            std::cout << "Finished sending person information" << std::endl;
+        }
+        else
+        {
+            std::cout << "recordPerson rpc failed!" << std::endl;
+        }
     }
 
   private:
