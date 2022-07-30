@@ -587,6 +587,7 @@ grpc_cc_library(
     ],
     external_deps = [
         "absl/status",
+        "absl/status:statusor",
         "absl/synchronization",
         "absl/container:inlined_vector",
         "absl/strings",
@@ -2236,6 +2237,41 @@ grpc_cc_library(
 )
 
 grpc_cc_library(
+    name = "event_engine_poller",
+    hdrs = [
+        "src/core/lib/event_engine/poller.h",
+    ],
+    external_deps = [
+        "absl/container:inlined_vector",
+        "absl/types:variant",
+    ],
+    deps = [
+        "event_engine_base_hdrs",
+        "gpr_platform",
+    ],
+)
+
+grpc_cc_library(
+    name = "event_engine_time_util",
+    srcs = ["src/core/lib/event_engine/time_util.cc"],
+    hdrs = ["src/core/lib/event_engine/time_util.h"],
+    deps = [
+        "event_engine_base_hdrs",
+        "gpr_platform",
+    ],
+)
+
+grpc_cc_library(
+    name = "common_event_engine_closures",
+    hdrs = ["src/core/lib/event_engine/common_closures.h"],
+    external_deps = ["absl/functional:any_invocable"],
+    deps = [
+        "event_engine_base_hdrs",
+        "gpr_platform",
+    ],
+)
+
+grpc_cc_library(
     name = "iomgr_ee_timer",
     srcs = [
         "src/core/lib/event_engine/iomgr_engine/timer.cc",
@@ -2443,6 +2479,34 @@ grpc_cc_library(
 )
 
 grpc_cc_library(
+    name = "iomgr_ee_poller_posix_poll",
+    srcs = [
+        "src/core/lib/event_engine/iomgr_engine/ev_poll_posix.cc",
+    ],
+    hdrs = [
+        "src/core/lib/event_engine/iomgr_engine/ev_poll_posix.h",
+    ],
+    external_deps = [
+        "absl/base:core_headers",
+        "absl/status",
+        "absl/status:statusor",
+        "absl/strings",
+        "absl/synchronization",
+        "absl/utility",
+    ],
+    deps = [
+        "gpr_base",
+        "gpr_codegen",
+        "iomgr_ee_closure",
+        "iomgr_ee_event_poller",
+        "iomgr_ee_wakeup_fd_posix",
+        "iomgr_ee_wakeup_fd_posix_default",
+        "iomgr_port",
+        "time",
+    ],
+)
+
+grpc_cc_library(
     name = "iomgr_ee_poller_posix_default",
     srcs = [
         "src/core/lib/event_engine/iomgr_engine/event_poller_posix_default.cc",
@@ -2450,10 +2514,12 @@ grpc_cc_library(
     hdrs = [
         "src/core/lib/event_engine/iomgr_engine/event_poller_posix_default.h",
     ],
+    external_deps = ["absl/strings"],
     deps = [
-        "gpr_platform",
+        "gpr_base",
         "iomgr_ee_event_poller",
         "iomgr_ee_poller_posix_epoll1",
+        "iomgr_ee_poller_posix_poll",
     ],
 )
 
@@ -3063,6 +3129,8 @@ grpc_cc_library(
     ],
     external_deps = [
         "absl/memory",
+        "absl/status",
+        "absl/status:statusor",
         "absl/strings",
     ],
     language = "c++",
@@ -3070,7 +3138,6 @@ grpc_cc_library(
     deps = [
         "channel_args",
         "config",
-        "error",
         "gpr_base",
         "grpc_service_config",
         "json",
@@ -3089,11 +3156,14 @@ grpc_cc_library(
     hdrs = [
         "src/core/lib/service_config/service_config_parser.h",
     ],
-    external_deps = ["absl/strings"],
+    external_deps = [
+        "absl/status",
+        "absl/status:statusor",
+        "absl/strings",
+    ],
     language = "c++",
     deps = [
         "channel_args",
-        "error",
         "gpr_base",
         "json",
     ],
@@ -3513,6 +3583,8 @@ grpc_cc_library(
     ],
     external_deps = [
         "absl/memory",
+        "absl/status",
+        "absl/status:statusor",
         "absl/strings",
         "absl/strings:str_format",
         "absl/types:optional",
@@ -3968,6 +4040,7 @@ grpc_cc_library(
         "iomgr_timer",
         "json",
         "json_util",
+        "match",
         "orphanable",
         "protobuf_any_upb",
         "protobuf_duration_upb",
@@ -4964,6 +5037,7 @@ grpc_cc_library(
         "grpc_trace",
         "grpc_xds_client",
         "iomgr_fwd",
+        "match",
         "orphanable",
         "ref_counted_ptr",
         "server_address",
@@ -6421,6 +6495,8 @@ grpc_cc_library(
     hdrs = GRPCXX_HDRS,
     external_deps = [
         "absl/base:core_headers",
+        "absl/status",
+        "absl/status:statusor",
         "absl/strings",
         "absl/synchronization",
         "absl/memory",
@@ -6465,6 +6541,8 @@ grpc_cc_library(
     hdrs = GRPCXX_HDRS,
     external_deps = [
         "absl/base:core_headers",
+        "absl/status",
+        "absl/status:statusor",
         "absl/strings",
         "absl/synchronization",
         "absl/memory",
@@ -6942,13 +7020,12 @@ grpc_cc_library(
     ],
     external_deps = [
         "absl/base:core_headers",
+        "absl/status",
+        "absl/status:statusor",
         "absl/strings",
         "absl/strings:str_format",
     ],
-    deps = [
-        "error",
-        "gpr_base",
-    ],
+    deps = ["gpr_base"],
 )
 
 grpc_cc_library(
