@@ -63,7 +63,6 @@ int main(int argc, char* argv[]) {
   }
 
   tutorial::AddressBook address_book;
-
   {
     // Read the existing address book.
     fstream input(argv[1], ios::in | ios::binary);
