@@ -193,6 +193,8 @@ std::string get_option_value(const std::string& option, const std::vector<std::s
         }
         return {};
     }
+
+    return {};
 }
 
 int main(int argc, char **argv)
