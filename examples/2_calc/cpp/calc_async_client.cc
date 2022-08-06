@@ -145,6 +145,7 @@ class CalcClient
             switch(tag_ptr->id)
             {
                 case MessageID::ADD: 
+                {
                     auto* call = static_cast<AsyncClientCall<AddRequest, AddResponse>*>(tag_ptr->call);
                     if (call)
                     {
@@ -163,8 +164,9 @@ class CalcClient
                     }
                     delete call;
                     break;
-                
-                case MessageID::SUB: 
+                }
+                case MessageID::SUB:
+                { 
                     auto* call = static_cast<AsyncClientCall<SubRequest, SubResponse>*>(tag_ptr->call);
                     if (call) {
                         if (call->status.ok()) {
@@ -181,8 +183,9 @@ class CalcClient
                     }
                     delete call;
                     break;
-                
+                }
                 case MessageID::MUL:
+                {
                     auto* call = static_cast<AsyncClientCall<MulRequest, MulResponse>*>(tag_ptr->call);
                     if (call) {
                         if (call->status.ok()) {
@@ -199,8 +202,9 @@ class CalcClient
                     }
                     delete call;
                     break;
-                
-                case MessageID::DIV: 
+                }
+                case MessageID::DIV:
+                {
                     auto* call = static_cast<AsyncClientCall<DivRequest, DivResponse>*>(tag_ptr->call);
                     if (call) {
                         if (call->status.ok()) {
@@ -217,8 +221,9 @@ class CalcClient
                     }
                     delete call;
                     break;
-                
+                }
                 case MessageID::MOD:
+                {
                     auto* call = static_cast<AsyncClientCall<ModRequest, ModResponse>*>(tag_ptr->call);
                     if (call) {
                         if (call->status.ok()) {
@@ -234,7 +239,8 @@ class CalcClient
                         err = "A client call was deleted";
                     }
                     delete call;
-                    break;                    
+                    break;
+                }              
             }
 
             delete tag_ptr;

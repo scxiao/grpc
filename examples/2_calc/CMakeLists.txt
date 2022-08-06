@@ -31,7 +31,9 @@ message("cmake_current_bin_dir = " ${CMAKE_BINARY_DIR})
 
 set(test_files 
     calc_client.cc 
-    calc_server.cc)
+    calc_server.cc
+    calc_async_client.cc
+    calc_async_server.cc)
 
 foreach(filepath_name ${test_files})
     get_filename_component(src_name ${filepath_name} NAME)
